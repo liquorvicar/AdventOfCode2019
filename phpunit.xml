@@ -8,12 +8,11 @@
          convertWarningsToExceptions="true"
          processIsolation="false"
          stopOnFailure="false"
-         syntaxCheck="false"
          bootstrap="vendor/autoload.php"
          verbose="true"
 >
     <testsuites>
-        <testsuite name="JSON Schema PHP Generator Test Suite">
+        <testsuite name="Advent of Code Test Suite">
             <directory>test</directory>
         </testsuite>
     </testsuites>

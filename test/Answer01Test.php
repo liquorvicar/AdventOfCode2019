@@ -19,14 +19,38 @@ class Answer01Test extends TestCase
         $this->logger = new Logger('AoC Test logger');
     }
 
-    public function testOne() {
+    /**
+     * @dataProvider dataForOne
+     */
+    public function testOne($mass, $fuel) {
         $answer = new Answer01($this->logger);
-        $this->assertEquals('one', $answer->one(['']));
+        $this->assertEquals($fuel, $answer->one([$mass]));
     }
 
-    public function testTwo() {
+    public function dataForOne() {
+        return [
+            [12, 2],
+            [14, 2],
+            [1969, 654],
+            [100756, 33583],
+        ];
+    }
+
+    /**
+     * @dataProvider dataForTwo
+     */
+    public function testTwo($mass, $fuel) {
         $answer = new Answer01($this->logger);
-        $this->assertEquals('two', $answer->two(['']));
+        $this->assertEquals($fuel, $answer->two([$mass]));
+    }
+
+    public function dataForTwo()
+    {
+        return [
+            [14, 2],
+            [1969, 966],
+            [100756, 50346],
+        ];
     }
 }
 
