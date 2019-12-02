@@ -2,22 +2,9 @@
 
 namespace AdventOfCode;
 
-use Monolog\Logger;
-use PHPUnit\Framework\TestCase;
-use Psr\Log\LoggerInterface;
 
-class Answer02Test extends TestCase
+class Answer02Test extends BaseTest
 {
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    public function setUp(): void
-    {
-        parent::setUp();
-        $this->logger = new Logger('AoC Test logger');
-    }
 
     /**
      * @dataProvider dataForOne

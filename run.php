@@ -1,7 +1,9 @@
 <?php
 require_once 'vendor/autoload.php';
 
-$day = 2;
+$options = getopt('p:', ['day:']);
+
+$day = (int)$options['day'];
 $inputFilename = sprintf('./input/%02d.txt', $day);
 
 if (!file_exists($inputFilename)) {
@@ -13,8 +15,6 @@ $input = file($inputFilename);
 $logger = new Monolog\Logger('Advent of Code challenge');
 $class = sprintf('AdventOfCode\Answer%02d', $day);
 $answer = new $class($logger);
-
-$options = getopt('p:');
 
 if (isset($options['p']) && $options['p'] === 'two') {
     echo $answer->two($input);

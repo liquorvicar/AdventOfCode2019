@@ -2,22 +2,9 @@
 
 namespace AdventOfCode;
 
-use Psr\Log\LoggerInterface;
 
-class Answer01
+class Answer01 extends Base
 {
-    /**
-     * @var LoggerInterface
-     */
-    private $logger;
-
-    /**
-     * @param LoggerInterface $logger
-     */
-    public function __construct(LoggerInterface $logger)
-    {
-        $this->logger = $logger;
-    }
 
     public function one(Array $input) {
         $this->logger->info('Running part one');
