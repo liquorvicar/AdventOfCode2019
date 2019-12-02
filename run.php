@@ -1,8 +1,8 @@
 <?php
 require_once 'vendor/autoload.php';
 
-$day = 1;
-$inputFilename = './input/01.txt';
+$day = 2;
+$inputFilename = sprintf('./input/%02d.txt', $day);
 
 if (!file_exists($inputFilename)) {
     throw new Exception('Cannot find input file.');
