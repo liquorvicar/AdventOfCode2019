@@ -6,13 +6,11 @@ class Answer03 extends Base
 {
     public function one(array $input)
     {
-        $paths = [
-            $this->traceWire(explode(',', trim($input[0]))),
-            $this->traceWire(explode(',', trim($input[1]))),
-        ];
-        $paths = $this->sortByDistance($paths);
+        $points = $this->traceWire(explode(',', trim($input[0])), [], 'a');
+        $points = $this->traceWire(explode(',', trim($input[1])), $points, 'b');
+        $paths = $this->sortByDistance($points);
         $closest = $this->findClosestCrossover($paths);
-        return $this->calculateManhattanDistance($closest);
+        return $this->calculateManhattanDistance(explode('.', $closest));
     }
 
     private function calculateManhattanDistance($position)
@@ -24,20 +22,32 @@ class Answer03 extends Base
     {
     }
 
-    public function traceWire($directions)
+    public function traceWire($directions, $points, $wire)
     {
-        $path = [];
         $position = [0,0];
         foreach ($directions as $number => $direction) {
             $this->logger->info('Adding direction', ['direction' => $direction, 'number' => $number]);
-            $path = $this->addDirection($path, $position, $direction);
+            $path = $this->addDirection($position, $direction);
             $position = $path[count($path) - 1];
+            foreach ($path as $point) {
+                $key = sprintf('%s.%s', $point[0], $point[1]);
+                $distance = $this->calculateManhattanDistance($point);
+                if (!isset($points[$distance])) {
+                    $points[$distance] = [];
+                }
+                if (!isset($points[$distance][$key])) {
+                    $points[$distance][$key] = $wire;
+                } elseif ($points[$distance][$key] !== $wire) {
+                    $points[$distance][$key] = $points[$distance][$key] . $wire;
+                }
+            }
         }
-        return $path;
+        return $points;
     }
 
-    public function addDirection(array $path, $start, $command)
+    public function addDirection($start, $command)
     {
+        $path = [];
         $direction = substr($command, 0, 1);
         $distance = (int)substr($command, 1);
         switch ($direction) {
@@ -69,59 +79,27 @@ class Answer03 extends Base
         return $path;
     }
 
-    public function findCrossovers(array $paths): array
-    {
-        $crossovers = [];
-        foreach ($paths[0] as $point) {
-            if (array_filter($paths[1], function ($candidate) use ($point) {
-                return $candidate[0] === $point[0] && $candidate[1] === $point[1];
-            })) {
-                $crossovers[] = $point;
-            }
-        }
-        return $crossovers;
-    }
-
     public function sortByDistance(array $paths): array
     {
-        $paths = array_map(function ($path) {
-            usort($path, function ($a, $b) {
-                $aDistance = $this->calculateManhattanDistance($a);
-                $bDistance = $this->calculateManhattanDistance($b);
-                if ($aDistance < $bDistance) {
-                    return -1;
-                } elseif ($aDistance === $bDistance) {
-                    return 0;
-                } else {
-                    return 1;
-                }
-            });
-            return $path;
-        }, $paths);
+        ksort($paths);
         return $paths;
     }
 
     public function findClosestCrossover(array $paths)
     {
-        $pos0 = 0;
-        $pos1 = 1;
-        while ($pos0 < count($paths[0]) && $pos1 < count($paths[1])) {
-            $this->logger->info('Examining', ['a' => $pos0, 'b' => $pos1]);
-            $point0 = $paths[0][$pos0];
-            $point1 = $paths[1][$pos1];
-            if ($point0[0] === $point1[0] && $point0[1] === $point1[1]) {
-                return $point0;
-            } elseif ($this->calculateManhattanDistance($point0) < $this->calculateManhattanDistance($point1)) {
-                $pos0++;
-            } elseif ($this->calculateManhattanDistance($point0) > $this->calculateManhattanDistance($point1)) {
-                $pos1++;
-            } elseif ($this->calculateManhattanDistance($point0) === $this->calculateManhattanDistance($paths[0][$pos0 + 1])) {
-                $pos0++;
-            } else {
-                $pos1++;
+        $found = false;
+        $key = null;
+        while (!$found) {
+            $distance = key($paths);
+            foreach ($paths[$distance] as $path => $wires) {
+                if (strlen($wires) > 1) {
+                    $found = true;
+                    $key = $path;
+                }
             }
+            array_shift($paths);
         }
-        return null;
+        return $key;
     }
 
 }

@@ -11,7 +11,7 @@ class Answer03Test extends BaseTest
     public function testAddDirection($direction, $result)
     {
         $answer = new Answer03($this->logger);
-        $this->assertEquals($result, $answer->addDirection([], [0, 0], $direction));
+        $this->assertEquals($result, $answer->addDirection([0, 0], $direction));
     }
 
     public function dataForAddDirection()
@@ -27,12 +27,10 @@ class Answer03Test extends BaseTest
     public function testFindClosestCrossover()
     {
         $answer = new Answer03($this->logger);
-        $paths = [
-            $answer->traceWire(explode(',', 'R8,U5,L5,D3')),
-            $answer->traceWire(explode(',', 'U7,R6,D4,L4')),
-        ];
+        $paths = $answer->traceWire(explode(',', 'R8,U5,L5,D3'), [], 'a');
+        $paths = $answer->traceWire(explode(',', 'U7,R6,D4,L4'), $paths, 'b');
         $paths = $answer->sortByDistance($paths);
-        $this->assertEquals([-3, 3], $answer->findClosestCrossover($paths));
+        $this->assertEquals('-3.3', $answer->findClosestCrossover($paths));
     }
 
     /**
