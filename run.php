@@ -1,6 +1,8 @@
 <?php
 require_once 'vendor/autoload.php';
 
+ini_set('memory_limit', '512M');
+
 $options = getopt('p:', ['day:']);
 
 $day = (int)$options['day'];
