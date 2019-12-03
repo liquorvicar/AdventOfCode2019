@@ -1,4 +1,5 @@
 <?php
+
 require_once 'vendor/autoload.php';
 
 ini_set('memory_limit', '512M');
@@ -15,6 +16,7 @@ if (!file_exists($inputFilename)) {
 $input = file($inputFilename);
 
 $logger = new Monolog\Logger('Advent of Code challenge');
+$logger->pushHandler(new Monolog\Handler\StreamHandler('php://stdout', Monolog\Logger::DEBUG));
 $class = sprintf('AdventOfCode\Answer%02d', $day);
 $answer = new $class($logger);
 

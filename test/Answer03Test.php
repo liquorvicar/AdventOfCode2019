@@ -24,14 +24,15 @@ class Answer03Test extends BaseTest
         ];
     }
 
-    public function testFindCrossovers()
+    public function testFindClosestCrossover()
     {
         $answer = new Answer03($this->logger);
         $paths = [
             $answer->traceWire(explode(',', 'R8,U5,L5,D3')),
             $answer->traceWire(explode(',', 'U7,R6,D4,L4')),
         ];
-        $this->assertEquals([[-5, 6], [-3, 3]], $answer->findCrossovers($paths));
+        $paths = $answer->sortByDistance($paths);
+        $this->assertEquals([-3, 3], $answer->findClosestCrossover($paths));
     }
 
     /**

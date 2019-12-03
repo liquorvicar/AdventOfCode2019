@@ -7,18 +7,17 @@ class Answer03 extends Base
     public function one(array $input)
     {
         $paths = [
-            $this->traceWire(explode(',', $input[0])),
-            $this->traceWire(explode(',', $input[1])),
+            $this->traceWire(explode(',', trim($input[0]))),
+            $this->traceWire(explode(',', trim($input[1]))),
         ];
-        $crossovers = $this->findCrossovers($paths);
-        $closest = null;
-        foreach ($crossovers as $crossover) {
-            $distance = abs($crossover[0]) + abs($crossover[1]);
-            if (!$closest || $closest > $distance) {
-                $closest = $distance;
-            }
-        }
-        return $closest;
+        $paths = $this->sortByDistance($paths);
+        $closest = $this->findClosestCrossover($paths);
+        return $this->calculateManhattanDistance($closest);
+    }
+
+    private function calculateManhattanDistance($position)
+    {
+        return abs($position[0]) + abs($position[1]);
     }
 
     public function two(array $input)
@@ -29,7 +28,8 @@ class Answer03 extends Base
     {
         $path = [];
         $position = [0,0];
-        foreach ($directions as $direction) {
+        foreach ($directions as $number => $direction) {
+            $this->logger->info('Adding direction', ['direction' => $direction, 'number' => $number]);
             $path = $this->addDirection($path, $position, $direction);
             $position = $path[count($path) - 1];
         }
@@ -80,6 +80,48 @@ class Answer03 extends Base
             }
         }
         return $crossovers;
+    }
+
+    public function sortByDistance(array $paths): array
+    {
+        $paths = array_map(function ($path) {
+            usort($path, function ($a, $b) {
+                $aDistance = $this->calculateManhattanDistance($a);
+                $bDistance = $this->calculateManhattanDistance($b);
+                if ($aDistance < $bDistance) {
+                    return -1;
+                } elseif ($aDistance === $bDistance) {
+                    return 0;
+                } else {
+                    return 1;
+                }
+            });
+            return $path;
+        }, $paths);
+        return $paths;
+    }
+
+    public function findClosestCrossover(array $paths)
+    {
+        $pos0 = 0;
+        $pos1 = 1;
+        while ($pos0 < count($paths[0]) && $pos1 < count($paths[1])) {
+            $this->logger->info('Examining', ['a' => $pos0, 'b' => $pos1]);
+            $point0 = $paths[0][$pos0];
+            $point1 = $paths[1][$pos1];
+            if ($point0[0] === $point1[0] && $point0[1] === $point1[1]) {
+                return $point0;
+            } elseif ($this->calculateManhattanDistance($point0) < $this->calculateManhattanDistance($point1)) {
+                $pos0++;
+            } elseif ($this->calculateManhattanDistance($point0) > $this->calculateManhattanDistance($point1)) {
+                $pos1++;
+            } elseif ($this->calculateManhattanDistance($point0) === $this->calculateManhattanDistance($paths[0][$pos0 + 1])) {
+                $pos0++;
+            } else {
+                $pos1++;
+            }
+        }
+        return null;
     }
 
 }
