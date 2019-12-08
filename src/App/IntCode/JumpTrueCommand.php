@@ -21,7 +21,7 @@ class JumpTrueCommand implements Command
     public function __construct(ValueRetriever $valueRetriever, $program, $position, $modes)
     {
         $this->comparator = $valueRetriever->retrieve($program, $position + 1, $modes[0]);
-        $this->target = $valueRetriever->retrieve($program, $position + 2, Value::Target);
+        $this->target = $valueRetriever->retrieve($program, $position + 2, $modes[1]);
     }
 
     public function run(array $program): array

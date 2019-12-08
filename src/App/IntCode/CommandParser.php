@@ -49,7 +49,7 @@ class CommandParser
                 return new InputCommand($this->valueRetriever, $program, $position, (int)array_shift($this->inputs));
                 break;
             case 4:
-                return new OutputCommand($this->valueRetriever, $program, $position, $this->outputs);
+                return new OutputCommand($this->valueRetriever, $program, $position, $this->outputs, $this->modes);
                 break;
             case 5:
                 return new JumpTrueCommand($this->valueRetriever, $program, $position, $this->modes);

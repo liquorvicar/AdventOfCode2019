@@ -9,20 +9,20 @@ class OutputCommand implements Command
      */
     protected $outputs;
     /**
-     * @var Value
+     * @var int
      */
     protected $target;
 
 
-    public function __construct(ValueRetriever $valueRetriever, $program, $position, $outputs)
+    public function __construct(ValueRetriever $valueRetriever, $program, $position, $outputs, $modes)
     {
         $this->outputs = $outputs;
-        $this->target = $valueRetriever->retrieve($program, $position + 1, Value::Target);
+        $this->target = $valueRetriever->retrieve($program, $position + 1, $modes[0]);
     }
 
     public function run($program): array
     {
-        $outputVal = $program[$this->target->get($program)];
+        $outputVal = $this->target->get($program);
         $this->outputs->add($outputVal);
         return $program;
     }

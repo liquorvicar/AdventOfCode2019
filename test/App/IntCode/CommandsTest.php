@@ -32,9 +32,9 @@ class CommandsTest extends BaseTest
 
     public function testWriteOutputValue()
     {
-        $program = [4, 2, 8];
+        $program = [4, 8];
         $outputs = new Outputs();
-        $output = new OutputCommand(new ValueRetriever(), $program, 0, $outputs);
+        $output = new OutputCommand(new ValueRetriever(), $program, 0, $outputs, [Value::Absolute]);
         $this->assertEquals($program, $output->run($program));
         $this->assertEquals([8], $outputs->getOutputs());
     }
@@ -42,7 +42,7 @@ class CommandsTest extends BaseTest
     public function testJumpIfTrueWhenTrue()
     {
         $program = [5, 1, 4, 99];
-        $jump = new JumpTrueCommand(new ValueRetriever(), $program, 0, [Value::Absolute]);
+        $jump = new JumpTrueCommand(new ValueRetriever(), $program, 0, [Value::Absolute, Value::Absolute]);
         $jump->run($program);
         $this->assertEquals(4, $jump->nextCommand(0));
     }
@@ -50,7 +50,7 @@ class CommandsTest extends BaseTest
     public function testJumpIfTrueWhenFalse()
     {
         $program = [5, 0, 4, 99];
-        $jump = new JumpTrueCommand(new ValueRetriever(), $program, 0, [Value::Absolute]);
+        $jump = new JumpTrueCommand(new ValueRetriever(), $program, 0, [Value::Absolute, Value::Absolute]);
         $jump->run($program);
         $this->assertEquals(3, $jump->nextCommand(0));
     }
@@ -58,7 +58,7 @@ class CommandsTest extends BaseTest
     public function testJumpIfFalseWhenTrue()
     {
         $program = [6, 1, 4, 99];
-        $jump = new JumpFalseCommand(new ValueRetriever(), $program, 0, [Value::Absolute]);
+        $jump = new JumpFalseCommand(new ValueRetriever(), $program, 0, [Value::Absolute, Value::Absolute]);
         $jump->run($program);
         $this->assertEquals(3, $jump->nextCommand(0));
     }
@@ -66,7 +66,7 @@ class CommandsTest extends BaseTest
     public function testJumpIfFalseWhenFalse()
     {
         $program = [6, 0, 4, 99];
-        $jump = new JumpFalseCommand(new ValueRetriever(), $program, 0, [Value::Absolute]);
+        $jump = new JumpFalseCommand(new ValueRetriever(), $program, 0, [Value::Absolute, Value::Absolute]);
         $jump->run($program);
         $this->assertEquals(4, $jump->nextCommand(0));
     }

@@ -21,7 +21,15 @@ class Answer05 extends Base
 
     public function two(array $input)
     {
-        // TODO: Implement two() method.
+        $elements = explode(',', $input[0]);
+        $program = array_map(function ($element) {
+            return (int)$element;
+        }, $elements);
+        $computer = new Computer($this->logger, [5]);
+        $computer->runProgram($program);
+        foreach ($computer->getOutputs() as $output) {
+            $this->logger->info('Output value', ['output' => $output]);
+        }
     }
 
 }
