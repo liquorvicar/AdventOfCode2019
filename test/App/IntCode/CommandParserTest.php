@@ -31,6 +31,10 @@ class CommandParserTest extends BaseTest
             [[2, 0, 0, 0], MultiplyCommand::class],
             [[3, 0, 0, 0], InputCommand::class],
             [[4, 0, 0, 0], OutputCommand::class],
+            [[5, 0, 0, 0], JumpTrueCommand::class],
+            [[6, 0, 0, 0], JumpFalseCommand::class],
+            [[7, 0, 0, 0], LessThanCommand::class],
+            [[8, 0, 0, 0], EqualsCommand::class],
             [[99, 0, 0, 0], TerminateCommand::class],
         ];
     }

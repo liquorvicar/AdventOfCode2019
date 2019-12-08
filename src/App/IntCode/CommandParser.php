@@ -51,6 +51,18 @@ class CommandParser
             case 4:
                 return new OutputCommand($this->valueRetriever, $program, $position, $this->outputs);
                 break;
+            case 5:
+                return new JumpTrueCommand($this->valueRetriever, $program, $position, $this->modes);
+                break;
+            case 6:
+                return new JumpFalseCommand($this->valueRetriever, $program, $position, $this->modes);
+                break;
+            case 7:
+                return new LessThanCommand($this->valueRetriever, $program, $position, $this->modes);
+                break;
+            case 8:
+                return new EqualsCommand($this->valueRetriever, $program, $position, $this->modes);
+                break;
             case 99:
                 return new TerminateCommand();
                 break;
