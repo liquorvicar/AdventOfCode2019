@@ -75,4 +75,9 @@ class CommandParser
     {
         return $this->modes;
     }
+
+    public function getInputs(): array
+    {
+        return $this->inputs;
+    }
 }
