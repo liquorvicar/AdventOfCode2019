@@ -6,7 +6,8 @@ interface Value
 {
     const Positional = 0;
     const Absolute = 1;
-    const Target = 2;
+    const Relational = 2;
+    const Target = 3;
 
     public function get(array $program): int;
 }

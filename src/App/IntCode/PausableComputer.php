@@ -27,6 +27,10 @@ class PausableComputer
      */
     private $position = 0;
     private $name;
+    /**
+     * @var int
+     */
+    private $relativeBase = 0;
 
     public function __construct(LoggerInterface $logger, $name, $program)
     {
@@ -42,8 +46,11 @@ class PausableComputer
         $commandParser = new CommandParser($this->inputs, $outputs);
         $finished = false;
         while (!$finished && $this->position <= count($this->program)) {
-            $command = $commandParser->parse($this->program, $this->position);
+            $command = $commandParser->parse($this->program, $this->position, $this->relativeBase);
             $this->program = $command->run($this->program);
+            if ($command instanceof RelativeBaseCommand) {
+                $this->relativeBase = $command->relativeBase();
+            }
             $finished = $command->isTerminated();
             $this->position = $command->nextCommand($this->position);
             if (!empty($outputs->getOutputs())) {

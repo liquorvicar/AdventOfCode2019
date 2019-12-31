@@ -18,10 +18,10 @@ class JumpTrueCommand implements Command
     protected $next = null;
 
 
-    public function __construct(ValueRetriever $valueRetriever, $program, $position, $modes)
+    public function __construct(ValueRetriever $valueRetriever, $program, $position, $modes, $relativeBase)
     {
-        $this->comparator = $valueRetriever->retrieve($program, $position + 1, $modes[0]);
-        $this->target = $valueRetriever->retrieve($program, $position + 2, $modes[1]);
+        $this->comparator = $valueRetriever->retrieve($program, $position + 1, $modes[0], $relativeBase);
+        $this->target = $valueRetriever->retrieve($program, $position + 2, $modes[1], $relativeBase);
     }
 
     public function run(array $program): array

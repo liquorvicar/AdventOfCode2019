@@ -37,7 +37,7 @@ class Computer
         $position = 0;
         $finished = false;
         while (!$finished && $position <= count($program)) {
-            $command = $this->commandParser->parse($program, $position);
+            $command = $this->commandParser->parse($program, $position, 0);
             $program = $command->run($program);
             $finished = $command->isTerminated();
             $position = $command->nextCommand($position);

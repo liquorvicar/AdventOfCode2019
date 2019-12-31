@@ -11,7 +11,7 @@ class CommandParserTest extends BaseTest
         $commands = new CommandParser([], new Outputs());
         $program = [];
         $this->expectException(\RuntimeException::class);
-        $commands->parse($program, 0);
+        $commands->parse($program, 0, 0);
     }
 
     /**
@@ -20,7 +20,7 @@ class CommandParserTest extends BaseTest
     public function testParsesCommand($program, $expectedCommand)
     {
         $commands = new CommandParser([0], new Outputs());
-        $command = $commands->parse($program, 0);
+        $command = $commands->parse($program, 0, 0);
         $this->assertEquals($expectedCommand, get_class($command));
     }
 
@@ -35,6 +35,7 @@ class CommandParserTest extends BaseTest
             [[6, 0, 0, 0], JumpFalseCommand::class],
             [[7, 0, 0, 0], LessThanCommand::class],
             [[8, 0, 0, 0], EqualsCommand::class],
+            [[9, 0, 0, 0], RelativeBaseCommand::class],
             [[99, 0, 0, 0], TerminateCommand::class],
         ];
     }
@@ -45,7 +46,7 @@ class CommandParserTest extends BaseTest
     public function testParsesModes($program, $expectedModes)
     {
         $commands = new CommandParser([], new Outputs());
-        $commands->parse($program, 0);
+        $commands->parse($program, 0, 0);
         $this->assertEquals($expectedModes, $commands->getModes());
     }
 
