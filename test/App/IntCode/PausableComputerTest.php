@@ -36,7 +36,6 @@ class PausableComputerTest extends BaseTest
             }
         }
         $this->assertEquals([$expected], $outputs);
-
     }
 
     public function dataForCompare()
@@ -64,6 +63,36 @@ class PausableComputerTest extends BaseTest
                 1106,0,36,98,0,0,1002,21,125,20,4,20,1105,1,46,104,
                 999,1105,1,46,1101,1000,1,20,4,20,1105,1,46,98,99], 9, 1001],
             [[9, 2, 204, 0, 99], 0, 204],
+        ];
+    }
+
+    /**
+     * @dataProvider dataForLargeNumbers
+     */
+    public function testLargeNumbers($memory, $expected)
+    {
+        $computer = new PausableComputer($this->logger, 'Test', $memory);
+        $computer->addInput(0);
+        $terminate = false;
+        $outputs = [];
+        while (!$terminate) {
+            $output = $computer->run();
+            if ($output === true) {
+                $terminate = true;
+            } else {
+                $outputs[] = $output;
+            }
+        }
+        $this->assertEquals($expected, $outputs);
+
+    }
+
+    public function dataForLargeNumbers()
+    {
+        return [
+            [[109,1,204,-1,1001,100,1,100,1008,100,16,101,1006,101,0,99], [109,1,204,-1,1001,100,1,100,1008,100,16,101,1006,101,0,99]],
+            [[1102,34915192,34915192,7,4,7,99,0], [1219070632396864]],
+            [[104,1125899906842624,99], [1125899906842624]],
         ];
     }
 }
