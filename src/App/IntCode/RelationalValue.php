@@ -14,8 +14,8 @@ class RelationalValue implements Value
         $this->position = $value + $base;
     }
 
-    public function get(array $program): int
+    public function get(Program $program): int
     {
-        return $program[$this->position] ?? 0;
+        return $program->getMemory($this->position) ?? 0;
     }
 }

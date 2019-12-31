@@ -14,15 +14,15 @@ class InputCommand implements Command
     protected $target;
 
 
-    public function __construct(ValueRetriever $valueRetriever, $program, $position, $inputVal, $relativeBase)
+    public function __construct(ValueRetriever $valueRetriever, Program $program, $position, $inputVal)
     {
         $this->input = new AbsoluteValue($inputVal);
-        $this->target = $valueRetriever->retrieve($program, $position + 1, Value::Target, $relativeBase);
+        $this->target = $valueRetriever->retrieve($program, $position + 1, Value::Target);
     }
 
-    public function run($program): array
+    public function run(Program $program): Program
     {
-        $program[$this->target->get($program)] = $this->input->get($program);
+        $program->setMemory($this->target->get($program), $this->input->get($program));
         return $program;
     }
 

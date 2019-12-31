@@ -15,7 +15,7 @@ class AbsoluteValue implements Value
         $this->value = $value;
     }
 
-    public function get(array $_program): int
+    public function get(Program $_program): int
     {
         return $this->value;
     }

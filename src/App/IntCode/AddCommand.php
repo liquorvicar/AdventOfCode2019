@@ -17,16 +17,16 @@ class AddCommand implements Command
      */
     protected $target;
 
-    public function __construct(ValueRetriever $valueRetriever, $program, $position, $modes, $relativeBase)
+    public function __construct(ValueRetriever $valueRetriever, Program $program, $position, $modes)
     {
-        $this->first = $valueRetriever->retrieve($program, $position + 1, $modes[0], $relativeBase);
-        $this->second = $valueRetriever->retrieve($program, $position + 2, $modes[1], $relativeBase);
-        $this->target = $valueRetriever->retrieve($program, $position + 3, Value::Target, $relativeBase);
+        $this->first = $valueRetriever->retrieve($program, $position + 1, $modes[0]);
+        $this->second = $valueRetriever->retrieve($program, $position + 2, $modes[1]);
+        $this->target = $valueRetriever->retrieve($program, $position + 3, Value::Target);
     }
 
-    public function run(array $program): array
+    public function run(Program $program): Program
     {
-        $program[$this->target->get($program)] = $this->first->get($program) + $this->second->get($program);
+        $program->setMemory($this->target->get($program), $this->first->get($program) + $this->second->get($program));
         return $program;
     }
 

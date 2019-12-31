@@ -19,7 +19,7 @@ class PausableComputer
      */
     private $valueRetriever;
     /**
-     * @var array
+     * @var Program
      */
     private $program;
     /**
@@ -27,16 +27,12 @@ class PausableComputer
      */
     private $position = 0;
     private $name;
-    /**
-     * @var int
-     */
-    private $relativeBase = 0;
 
     public function __construct(LoggerInterface $logger, $name, $program)
     {
         $this->logger = $logger;
         $this->valueRetriever = new ValueRetriever();
-        $this->program = $program;
+        $this->program = new Program($program);
         $this->name = $name;
     }
 
@@ -45,12 +41,9 @@ class PausableComputer
         $outputs = new Outputs();
         $commandParser = new CommandParser($this->inputs, $outputs);
         $finished = false;
-        while (!$finished && $this->position <= count($this->program)) {
-            $command = $commandParser->parse($this->program, $this->position, $this->relativeBase);
+        while (!$finished && !is_null($this->program->getMemory($this->position))) {
+            $command = $commandParser->parse($this->program, $this->position);
             $this->program = $command->run($this->program);
-            if ($command instanceof RelativeBaseCommand) {
-                $this->relativeBase = $command->relativeBase();
-            }
             $finished = $command->isTerminated();
             $this->position = $command->nextCommand($this->position);
             if (!empty($outputs->getOutputs())) {

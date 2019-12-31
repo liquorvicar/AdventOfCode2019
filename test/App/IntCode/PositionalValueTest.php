@@ -9,7 +9,7 @@ class PositionalValueTest extends BaseTest
     public function testReturnsZeroIfPositionOutOfRange()
     {
         $value = new PositionalValue(4);
-        $program = [3, 1, 2, 5];
+        $program = new Program([3, 1, 2, 5]);
         $this->assertEquals(0, $value->get($program));
     }
 }

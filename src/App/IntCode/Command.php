@@ -6,7 +6,7 @@ namespace AdventOfCode\App\IntCode;
 
 interface Command
 {
-    public function run(array $program): array;
+    public function run(Program $program): Program;
 
     public function nextCommand(int $position): int;
 

@@ -4,7 +4,7 @@ namespace AdventOfCode\App\IntCode;
 
 class TerminateCommand implements Command
 {
-    public function run($program): array
+    public function run(Program $program): Program
     {
         return $program;
     }

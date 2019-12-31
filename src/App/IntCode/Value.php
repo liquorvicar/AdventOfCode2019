@@ -9,5 +9,5 @@ interface Value
     const Relational = 2;
     const Target = 3;
 
-    public function get(array $program): int;
+    public function get(Program $program): int;
 }

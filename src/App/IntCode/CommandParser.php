@@ -26,12 +26,12 @@ class CommandParser
         $this->outputs = $outputs;
     }
 
-    public function parse(array $program, int $position, $relativeBase): Command
+    public function parse(Program $program, int $position): Command
     {
-        if (!isset($program[$position])) {
+        $commandVal = $program->getMemory($position);
+        if (is_null($commandVal)) {
             throw new \RuntimeException(sprintf('Command not found at %d', $position));
         }
-        $commandVal = $program[$position];
         $this->modes = [];
         $commandVal = $commandVal % 10000;
         $this->modes[] = (int)floor($commandVal / 1000);
@@ -40,31 +40,31 @@ class CommandParser
         $commandVal = $commandVal % 100;
         switch ($commandVal) {
             case 1:
-                return new AddCommand($this->valueRetriever, $program, $position, $this->modes, $relativeBase);
+                return new AddCommand($this->valueRetriever, $program, $position, $this->modes);
                 break;
             case 2:
-                return new MultiplyCommand($this->valueRetriever, $program, $position, $this->modes, $relativeBase);
+                return new MultiplyCommand($this->valueRetriever, $program, $position, $this->modes);
                 break;
             case 3:
-                return new InputCommand($this->valueRetriever, $program, $position, (int)array_shift($this->inputs), $relativeBase);
+                return new InputCommand($this->valueRetriever, $program, $position, (int)array_shift($this->inputs));
                 break;
             case 4:
-                return new OutputCommand($this->valueRetriever, $program, $position, $this->outputs, $this->modes, $relativeBase);
+                return new OutputCommand($this->valueRetriever, $program, $position, $this->outputs, $this->modes);
                 break;
             case 5:
-                return new JumpTrueCommand($this->valueRetriever, $program, $position, $this->modes, $relativeBase);
+                return new JumpTrueCommand($this->valueRetriever, $program, $position, $this->modes);
                 break;
             case 6:
-                return new JumpFalseCommand($this->valueRetriever, $program, $position, $this->modes, $relativeBase);
+                return new JumpFalseCommand($this->valueRetriever, $program, $position, $this->modes);
                 break;
             case 7:
-                return new LessThanCommand($this->valueRetriever, $program, $position, $this->modes, $relativeBase);
+                return new LessThanCommand($this->valueRetriever, $program, $position, $this->modes);
                 break;
             case 8:
-                return new EqualsCommand($this->valueRetriever, $program, $position, $this->modes, $relativeBase);
+                return new EqualsCommand($this->valueRetriever, $program, $position, $this->modes);
                 break;
             case 9:
-                return new RelativeBaseCommand($this->valueRetriever, $program, $position, $relativeBase);
+                return new RelativeBaseCommand($this->valueRetriever, $program, $position);
                 break;
             case 99:
                 return new TerminateCommand();

@@ -32,17 +32,18 @@ class Computer
         $this->commandParser = new CommandParser($inputs, $this->outputs);
     }
 
-    public function runProgram(array $program)
+    public function runProgram(array $memory)
     {
+        $program = new Program($memory);
         $position = 0;
         $finished = false;
-        while (!$finished && $position <= count($program)) {
-            $command = $this->commandParser->parse($program, $position, 0);
+        while (!$finished && !is_null($program->getMemory($position))) {
+            $command = $this->commandParser->parse($program, $position);
             $program = $command->run($program);
             $finished = $command->isTerminated();
             $position = $command->nextCommand($position);
         }
-        return $program[0];
+        return $program->getMemory(0);
     }
 
     public function getOutputs(): array

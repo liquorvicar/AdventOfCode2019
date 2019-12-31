@@ -4,9 +4,9 @@ namespace AdventOfCode\App\IntCode;
 
 class MultiplyCommand extends AddCommand
 {
-    public function run(array $program): array
+    public function run(Program $program): Program
     {
-        $program[$this->target->get($program)] = $this->first->get($program) * $this->second->get($program);
+        $program->setMemory($this->target->get($program), $this->first->get($program) * $this->second->get($program));
         return $program;
     }
 }

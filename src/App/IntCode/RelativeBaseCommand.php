@@ -5,17 +5,15 @@ namespace AdventOfCode\App\IntCode;
 class RelativeBaseCommand implements Command
 {
     private $value;
-    private $relativeBase;
 
-    public function __construct(ValueRetriever $valueRetriever, $program, $position, $relativeBase)
+    public function __construct(ValueRetriever $valueRetriever, Program $program, $position)
     {
-        $this->value = $valueRetriever->retrieve($program, $position + 1, Value::Absolute, $relativeBase);
-        $this->relativeBase = $relativeBase;
+        $this->value = $valueRetriever->retrieve($program, $position + 1, Value::Absolute);
     }
 
-    public function run(array $program): array
+    public function run(Program $program): Program
     {
-        $this->relativeBase += $this->value->get($program);
+        $program->adjustRelativeBase($this->value->get($program));
         return $program;
     }
 
@@ -27,10 +25,5 @@ class RelativeBaseCommand implements Command
     public function isTerminated(): bool
     {
         return false;
-    }
-
-    public function relativeBase(): int
-    {
-        return $this->relativeBase;
     }
 }

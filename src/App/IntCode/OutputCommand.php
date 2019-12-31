@@ -14,13 +14,13 @@ class OutputCommand implements Command
     protected $target;
 
 
-    public function __construct(ValueRetriever $valueRetriever, $program, $position, $outputs, $modes, $relativeBase)
+    public function __construct(ValueRetriever $valueRetriever, Program $program, $position, $outputs, $modes)
     {
         $this->outputs = $outputs;
-        $this->target = $valueRetriever->retrieve($program, $position + 1, $modes[0], $relativeBase);
+        $this->target = $valueRetriever->retrieve($program, $position + 1, $modes[0]);
     }
 
-    public function run($program): array
+    public function run(Program $program): Program
     {
         $outputVal = $this->target->get($program);
         $this->outputs->add($outputVal);
