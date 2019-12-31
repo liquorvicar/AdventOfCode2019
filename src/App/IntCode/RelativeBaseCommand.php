@@ -6,9 +6,9 @@ class RelativeBaseCommand implements Command
 {
     private $value;
 
-    public function __construct(ValueRetriever $valueRetriever, Program $program, $position)
+    public function __construct(ValueRetriever $valueRetriever, Program $program, $position, $mode)
     {
-        $this->value = $valueRetriever->retrieve($program, $position + 1, Value::Absolute);
+        $this->value = $valueRetriever->retrieve($program, $position + 1, $mode);
     }
 
     public function run(Program $program): Program

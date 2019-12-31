@@ -21,7 +21,7 @@ class AddCommand implements Command
     {
         $this->first = $valueRetriever->retrieve($program, $position + 1, $modes[0]);
         $this->second = $valueRetriever->retrieve($program, $position + 2, $modes[1]);
-        $this->target = $valueRetriever->retrieve($program, $position + 3, Value::Target);
+        $this->target = $valueRetriever->retrieve($program, $position + 3, $modes[2] ?? Value::Target, ValueRetriever::LITERAL);
     }
 
     public function run(Program $program): Program

@@ -33,8 +33,9 @@ class CommandParser
             throw new \RuntimeException(sprintf('Command not found at %d', $position));
         }
         $this->modes = [];
+        $this->modes[] = (int)floor($commandVal / 10000);
         $commandVal = $commandVal % 10000;
-        $this->modes[] = (int)floor($commandVal / 1000);
+        array_unshift($this->modes, (int)floor($commandVal / 1000));
         $commandVal = $commandVal % 1000;
         array_unshift($this->modes, (int)floor($commandVal / 100));
         $commandVal = $commandVal % 100;
@@ -46,7 +47,7 @@ class CommandParser
                 return new MultiplyCommand($this->valueRetriever, $program, $position, $this->modes);
                 break;
             case 3:
-                return new InputCommand($this->valueRetriever, $program, $position, (int)array_shift($this->inputs));
+                return new InputCommand($this->valueRetriever, $program, $position, (int)array_shift($this->inputs), $this->modes[0]);
                 break;
             case 4:
                 return new OutputCommand($this->valueRetriever, $program, $position, $this->outputs, $this->modes);
@@ -64,7 +65,7 @@ class CommandParser
                 return new EqualsCommand($this->valueRetriever, $program, $position, $this->modes);
                 break;
             case 9:
-                return new RelativeBaseCommand($this->valueRetriever, $program, $position);
+                return new RelativeBaseCommand($this->valueRetriever, $program, $position, $this->modes[0]);
                 break;
             case 99:
                 return new TerminateCommand();

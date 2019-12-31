@@ -57,6 +57,21 @@ class PausableComputer
         return true;
     }
 
+    public function runToTermination()
+    {
+        $terminate = false;
+        $outputs = [];
+        while (!$terminate) {
+            $output = $this->run();
+            if ($output === true) {
+                $terminate = true;
+            } else {
+                $outputs[] = $output;
+            }
+        }
+        return $outputs;
+    }
+
     public function addInput($input): void
     {
         $this->inputs[] = $input;

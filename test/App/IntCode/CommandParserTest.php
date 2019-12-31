@@ -53,10 +53,11 @@ class CommandParserTest extends BaseTest
     public function dataForParsesModes()
     {
         return [
-            [[1], [0, 0]],
-            [[101], [1, 0]],
-            [[1101], [1, 1]],
-            [[1001], [0, 1]],
+            [[1], [0, 0, 0]],
+            [[101], [1, 0, 0]],
+            [[1101], [1, 1, 0]],
+            [[1001], [0, 1, 0]],
+            [[21001], [0, 1, 2]],
         ];
     }
 }
