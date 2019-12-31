@@ -6,7 +6,7 @@ class ValueRetriever
 {
     public function retrieve(array $program, int $position, int $mode, int $relativeBase): Value
     {
-        $value = $program[$position] ?? $program[0];
+        $value = $program[$position] ?? 0;
         switch ($mode) {
             case Value::Positional:
                 return new PositionalValue($value);

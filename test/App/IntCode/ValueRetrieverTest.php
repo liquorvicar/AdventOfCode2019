@@ -36,7 +36,7 @@ class ValueRetrieverTest extends BaseTest
         $values = new ValueRetriever();
         $program = [3, 1, 2, 5];
         $value = $values->retrieve($program, 4, Value::Positional, 0);
-        $this->assertEquals(5, $value->get($program));
+        $this->assertEquals(3, $value->get($program));
     }
 
     public function testRetrievesRelativeValue()
